@@ -67,9 +67,9 @@ MP/
     메서드	    엔드포인트	            설명
     
     POST	    /status	            새로운 상태 등록
-    GET	        /status	            전체 상태 목록 조회
-    GET	        /status/:id	        특정 상태 조회
-    PUT	        /status/:id	        상태 수정
+    GET	      /status	            전체 상태 목록 조회
+    GET	      /status/:id	        특정 상태 조회
+    PUT	      /status/:id	        상태 수정
     DELETE	    /status/:id	        상태 삭제
 
 
