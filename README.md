@@ -89,3 +89,4 @@ PUT /status/:id
 {
   "message": "밥 다 먹고 나왔어요 ☕"
 }
+
