@@ -56,6 +56,9 @@ cd MP
 
 ```bash
 npm install
+npm install swagger-jsdoc swagger-ui-express
+npm install express mongoose dotenv cors
+npm install --save-dev nodemon
 ```
 
 3.  `.env` 파일 생성 후 다음 내용 작성
@@ -79,6 +82,7 @@ npm start
 
 5. Swagger 문서 접속 (API 시각화 확인)
 ```
+http://localhost:5000
 http://localhost:5000/api-docs
 ```
 
