@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: 지금 뭐해요 - 백엔드 API
+  version: 1.0.0
+  description: 위치 기반 감정 상태 공유 앱의 백엔드 API 문서입니다.
+servers:
+  - url: http://localhost:5000
+paths:
+  /status:
+    get:
+      summary: 전체 상태 조회
+      tags: [Status]
+      responses:
+        '200':
+          description: 상태 목록 반환
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+    post:
+      summary: 새로운 상태 등록
+      tags: [Status]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusInput'
+      responses:
+        '201':
+          description: 상태 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /status/{id}:
+    get:
+      summary: 특정 상태 조회
+      tags: [Status]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 상태 상세 정보 반환
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: 상태를 찾을 수 없음
+    put:
+      summary: 상태 수정
+      tags: [Status]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusUpdate'
+      responses:
+        '200':
+          description: 상태 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '404':
+          description: 상태를 찾을 수 없음
+    delete:
+      summary: 상태 삭제
+      tags: [Status]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 상태 삭제 성공
+        '404':
+          description: 상태를 찾을 수 없음
+components:
+  schemas:
+    Status:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 661db9fe2910cc92060a6e23
+        nickname:
+          type: string
+          example: 혼밥러
+        message:
+          type: string
+          example: 점심 혼자 먹는 중 🍱
+        emoji:
+          type: string
+          example: 🍱
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 37.5
+            longitude:
+              type: number
+              example: 127.0
+        createdAt:
+          type: string
+          format: date-time
+          example: 2024-04-12T14:32:10.123Z
+    StatusInput:
+      type: object
+      required:
+        - nickname
+        - message
+        - emoji
+        - location
+      properties:
+        nickname:
+          type: string
+          example: 혼밥러
+        message:
+          type: string
+          example: 점심 혼자 먹는 중 🍱
+        emoji:
+          type: string
+          example: 🍱
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 37.5
+            longitude:
+              type: number
+              example: 127.0
+    StatusUpdate:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 도서관에서 코딩 집중 중 💻
+        emoji:
+          type: string
+          example: 💻
