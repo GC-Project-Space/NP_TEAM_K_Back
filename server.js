@@ -4,6 +4,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const statusRoutes = require('./routes/statusRoutes');
+const userRoutes = require('./routes/userRoutes');
+const reportRoutes = require('./routes/reportRoutes');
+
 
 //  Swagger 관련 추가
 const swaggerUi = require('swagger-ui-express');
@@ -24,8 +28,9 @@ const connectDB = require('./config/db');
 connectDB();
 
 // 라우트 연결
-const statusRoutes = require('./routes/statusRoutes');
-app.use('/status', statusRoutes);
+app.use('/status', statusRoutes);   // 상태 등록, 삭제, 리액션 처리 등
+app.use('/user', userRoutes);       // 로그인, 내 정보
+app.use('/report', reportRoutes);   // 리포트 조회
 
 //  Swagger 문서 라우트 연결
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

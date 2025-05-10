@@ -15,6 +15,10 @@ const options = {
       {
         url: 'http://localhost:5000', // 기본 서버 주소 (배포 시 수정 가능)
       },
+      {
+        url: 'http://34.47.69.253/',
+        description: '실제 배포 서버',
+      },
     ],
     components: {
       schemas: {

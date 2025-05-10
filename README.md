@@ -35,10 +35,10 @@ MP/
 │   └── Status.js            # 상태 데이터 모델 정의
 │
 ├── controllers/
-│   └── statusController.js  # CRUD 로직
+│   └── tempStatusController.js  # CRUD 로직
 │
 ├── routes/
-│   └── statusRoutes.js      # API 라우터
+│   └── tempStatusRoutes.js      # API 라우터
 </pre>
 
 ---
@@ -128,5 +128,5 @@ http://localhost:5000/api-docs
   ```
   http://localhost:5000/api-docs
   ```
-- `routes/statusRoutes.js`에 Swagger 주석으로 구성되어 있으며, 자동으로 문서화됩니다.
+- `routes/tempStatusRoutes.js`에 Swagger 주석으로 구성되어 있으며, 자동으로 문서화됩니다.
 - 프론트 개발자 또는 팀원은 Swagger 문서를 통해 API 구조를 쉽게 파악할 수 있습니다.
