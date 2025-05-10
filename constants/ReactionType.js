@@ -4,3 +4,5 @@ const ReactionType = Object.freeze({
     BEST:   { id: 3, label: 'best' },
     FUNNY:  { id: 4, label: 'funny' },
 });
+
+module.exports = { ReactionType };

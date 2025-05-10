@@ -64,7 +64,7 @@ const options = {
       },
     },
   },
-  apis: ['./routes/*.js'], // 주석이 달린 라우트 파일 위치
+  apis: [__dirname + '/../routes/*.js'], // 주석이 달린 라우트 파일 위치
 };
 
 const specs = swaggerJsdoc(options);
