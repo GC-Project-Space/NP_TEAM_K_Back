@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const statusRoutes = require('./routes/statusRoutes');
+const reportRoutes = require('./routes/reportRoutes'); // 리포트 조회
 
 //  Swagger 관련 추가
 const swaggerUi = require('swagger-ui-express');
@@ -35,7 +36,7 @@ connectDB();
 // 라우트 연결
 app.use('/status', statusRoutes); // 상태 등록, 삭제, 리액션 처리 등
 app.use('/user', userRoutes);       // 로그인, 내 정보
-//app.use('/report', reportRoutes);   // 리포트 조회
+app.use('/report', reportRoutes);   // 리포트 조회
 
 //  Swagger 문서 라우트 연결
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
