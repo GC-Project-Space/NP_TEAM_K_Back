@@ -2,9 +2,13 @@ const Status = require('../models/Status');
 const Reaction = require('../models/Reaction');
 const { ReactionType } = require('../constants/ReactionType');
 
+// todo : 상태 생성하고 감정 표현 할 때 상태 리포트 스키마를 찾아 계속 업데이트 해줘야함
+// todo : 리포트 요청은 즉시 계산해서 내려주는 것이 아니라, 미리 저장해두고 내려주기 때문에
+// todo : 상태 서비스에서 계속 리포트의 스키마를 업데이트 해줘야 함
+
 // 상태 생성 todo: 상태 생성할 때 오늘자 리포트 스키마에도 정보 업데이트 해줘야함
 // todo: 리포트 스키마 찾아오는 건 리포트 서비스에 있는 메서드 쓰면 됨.
-// todo : openai api 요청해서 감정 태깅 후 리포트에 저장까지 완료해야 함
+// todo : openai api 요청해서 감정 태깅 후 리포트에 저장까지 완료해야 함 (피그마 리포트 페이지 참고)
 const createStatus = async (dto) => {
     const status = new Status({
         writerKakaoId: dto.writerKakaoId,
