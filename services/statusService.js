@@ -2,6 +2,9 @@ const Status = require('../models/Status');
 const Reaction = require('../models/Reaction');
 const { ReactionType } = require('../constants/ReactionType');
 
+// 상태 생성 todo: 상태 생성할 때 오늘자 리포트 스키마에도 정보 업데이트 해줘야함
+// todo: 리포트 스키마 찾아오는 건 리포트 서비스에 있는 메서드 쓰면 됨.
+// todo : openai api 요청해서 감정 태깅 후 리포트에 저장까지 완료해야 함
 const createStatus = async (dto) => {
     const status = new Status({
         writerKakaoId: dto.writerKakaoId,
@@ -16,6 +19,7 @@ const createStatus = async (dto) => {
     }
 };
 
+// 상태 삭제
 const deleteStatus = async (id, kakaoId) => {
     const status = await Status.findById(id);
     if (!status || status.writerKakaoId !== kakaoId) return null;
@@ -24,6 +28,8 @@ const deleteStatus = async (id, kakaoId) => {
     return true;
 };
 
+// 상태 목록 조회 (거리순, 인기순)
+// todo: 걍 이렇게 조회된 상태는 조회 수 하나씩 높이지 말고 상세 조회나, 이모티콘 남겼을 떄만 조회수 높이기
 const getStatuses = async ({ lat, lng, sort, kakaoId }) => {
     const statuses = await Status.find();
 
@@ -57,6 +63,8 @@ const getStatuses = async ({ lat, lng, sort, kakaoId }) => {
     }));
 };
 
+// 상태 상세 조회
+// todo: 조회 수 증가, 상태 리포트 정보 업데이트
 const getStatusById = async ({ id, kakaoId }) => {
     const status = await Status.findById(id);
     if (!status) return { status: null, myReaction: null };
@@ -70,6 +78,8 @@ const getStatusById = async ({ id, kakaoId }) => {
     return { status, myReaction };
 };
 
+// 리액션 추가
+// todo: 조회수 증가 시키기, 리액션 추가 시 리포트 정보 업데이트
 const reactToStatus = async ({ statusId, kakaoId, reactionType }) => {
     if (!ReactionType[reactionType.toUpperCase()]) return null;
     const status = await Status.findById(statusId);
@@ -83,6 +93,8 @@ const reactToStatus = async ({ statusId, kakaoId, reactionType }) => {
     return status;
 };
 
+// 리액션 취소
+// todo: 조회수 증가 시키기, 리액션 취소 시 리포트 정보 업데이트
 const cancelReaction = async ({ statusId, kakaoId, reactionType }) => {
     const deleted = await Reaction.findOneAndDelete({
         statusId,
