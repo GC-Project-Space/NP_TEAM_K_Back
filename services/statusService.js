@@ -12,7 +12,7 @@ const { analyzeEmotionFromOpenAI } = require('../services/openaiService');
 // todo: 리포트 스키마 찾아오는 건 리포트 서비스에 있는 메서드 쓰면 됨.
 // todo : openai api 요청해서 감정 태깅 후 리포트에 저장까지 완료해야 함 (피그마 리포트 페이지 참고)
 const createStatus = async (dto) => {
-    // 1 상태 저장
+    // 1. 상태 객체 생성 (감정은 저장 안 함!)
     const status = new Status({
         writerKakaoId: dto.writerKakaoId,
         message: dto.message,
@@ -20,25 +20,37 @@ const createStatus = async (dto) => {
     });
 
     try {
+        // 2. 상태 저장
         const savedStatus = await status.save();
 
-        // 2 리포트 찾기 (또는 생성)
-        const report = await getTodayReport(dto.writerKakaoId);
+        // 3. 감정 분석
+        const detectedEmotion = await analyzeEmotionFromOpenAI(dto.message); // ex: 'happy', 'sad', ...
 
-        // 3 업로드 횟수 +1
+        // 4. 오늘 날짜 확인
+        const today = moment().format('YYYY-MM-DD');
+
+        // 5. 리포트 찾기 또는 생성
+        let report = await DailyReport.findOne({ kakaoId: dto.writerKakaoId, date: today });
+
+        if (!report) {
+            report = new DailyReport({
+                kakaoId: dto.writerKakaoId,
+                date: today,
+            });
+        }
+
+        // 6. 업로드 수 +1
         report.uploadCount += 1;
 
-        // 4 감정 분석 (OpenAI 추후 연결)
-        const detectedEmotion = await analyzeEmotionFromOpenAI(dto.message); // ex: 'sad', 'angry' , 'anxious' , 'happy' , 'surprise' , 'lonely'
-
-        // 5 감정 통계 반영
+        // 7. 감정 카운트 +1
         if (report.emotionCounts[detectedEmotion] !== undefined) {
             report.emotionCounts[detectedEmotion] += 1;
         }
 
-        // 6 저장
+        // 8. 리포트 저장
         await report.save();
 
+        // 9. 상태 반환
         return savedStatus;
     } catch (err) {
         console.error('[MONGO ERROR] 상태 저장 실패:', err);

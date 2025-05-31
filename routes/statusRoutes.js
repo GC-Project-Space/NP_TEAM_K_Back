@@ -54,6 +54,39 @@ router.post('/debug', (req, res) => {
  *     responses:
  *       201:
  *         description: 생성된 상태 정보
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 writerKakaoId:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 location:
+ *                   type: object
+ *                   properties:
+ *                     latitude:
+ *                       type: number
+ *                     longitude:
+ *                       type: number
+ *                 createdAt:
+ *                   type: string
+ *                 viewCount:
+ *                   type: number
+ *                 reactionCounts:
+ *                   type: object
+ *                   properties:
+ *                     like:
+ *                       type: number
+ *                     sad:
+ *                       type: number
+ *                     best:
+ *                       type: number
+ *                     funny:
+ *                       type: number
  */
 router.post('/', ctrl.createStatus);
 
