@@ -119,6 +119,39 @@ router.delete('/:id', ctrl.deleteStatus);
 
 /**
  * @swagger
+ * /status/mine:
+ *   get:
+ *     summary: 내가 작성한 상태 목록 조회
+ *     tags: [Status]
+ *     parameters:
+ *       - in: query
+ *         name: kakaoId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 작성자 카카오 ID
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [recent, popular]
+ *           default: recent
+ *         description: "정렬 방식 (recent: 최신순, popular: 인기순)"
+ *     responses:
+ *       200:
+ *         description: 내가 작성한 상태 목록 반환
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Status'
+ */
+router.get('/mine', ctrl.getMyStatuses);
+
+
+/**
+ * @swagger
  * /status:
  *   get:
  *     summary: 상태 목록 조회 (거리순 기본, 인기순 선택)

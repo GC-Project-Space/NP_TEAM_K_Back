@@ -206,6 +206,21 @@ const cancelReaction = async ({ statusId, kakaoId, reactionType }) => {
     return status;
 };
 
+const getMyStatuses = async (kakaoId, sort = 'recent') => {
+    const query = { writerKakaoId: kakaoId };
+
+    let sortOption = { createdAt: -1 }; // 기본값: 최신순
+    if (sort === 'popular') {
+        sortOption = { 
+            'reactionCounts.like': -1, 
+            'reactionCounts.best': -1, 
+            createdAt: -1, // 동점일 때는 최신순
+        };
+    }
+
+    return await Status.find(query).sort(sortOption);
+};
+
 module.exports = {
     createStatus,
     deleteStatus,
@@ -213,4 +228,5 @@ module.exports = {
     getStatusById,
     reactToStatus,
     cancelReaction,
+    getMyStatuses,
 };

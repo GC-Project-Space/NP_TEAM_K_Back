@@ -54,6 +54,14 @@ const cancelReaction = async (req, res) => {
     res.json(new StatusResponse(updated, null));
 };
 
+const getMyStatuses = async (req, res) => {
+    const { kakaoId, sort } = req.query;
+    if (!kakaoId) return res.status(400).json({ error: 'kakaoId가 필요합니다' });
+
+    const myStatuses = await service.getMyStatuses(kakaoId, sort);
+    res.json(myStatuses.map(s => new StatusResponse(s)));
+};
+
 module.exports = {
     createStatus,
     deleteStatus,
@@ -61,4 +69,5 @@ module.exports = {
     getStatusById,
     addReaction,
     cancelReaction,
+    getMyStatuses,
 };
