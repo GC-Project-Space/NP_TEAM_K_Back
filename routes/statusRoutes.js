@@ -149,6 +149,51 @@ router.delete('/:id', ctrl.deleteStatus);
  */
 router.get('/mine', ctrl.getMyStatuses);
 
+/**
+ * @swagger
+ * /status/weekly:
+ *   get:
+ *     summary: 최근 7일간 요일별 상태 작성 횟수 조회
+ *     tags: [Status]
+ *     parameters:
+ *       - in: query
+ *         name: kakaoId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 사용자 카카오 ID
+ *     responses:
+ *       200:
+ *         description: 요일별 포스팅 수
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 월:
+ *                   type: integer
+ *                   example: 2
+ *                 화:
+ *                   type: integer
+ *                   example: 1
+ *                 수:
+ *                   type: integer
+ *                   example: 0
+ *                 목:
+ *                   type: integer
+ *                   example: 3
+ *                 금:
+ *                   type: integer
+ *                   example: 1
+ *                 토:
+ *                   type: integer
+ *                   example: 0
+ *                 일:
+ *                   type: integer
+ *                   example: 2
+ */
+router.get('/weekly', ctrl.getWeeklyPostingStats);
+
 
 /**
  * @swagger

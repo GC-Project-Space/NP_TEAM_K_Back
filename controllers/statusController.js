@@ -62,6 +62,14 @@ const getMyStatuses = async (req, res) => {
     res.json(myStatuses.map(s => new StatusResponse(s)));
 };
 
+const getWeeklyPostingStats = async (req, res) => {
+  const { kakaoId } = req.query;
+  if (!kakaoId) return res.status(400).json({ error: 'kakaoId가 필요합니다' });
+
+  const stats = await service.getWeeklyPostingStats(kakaoId);
+  res.json(stats);
+};
+
 module.exports = {
     createStatus,
     deleteStatus,
@@ -70,4 +78,5 @@ module.exports = {
     addReaction,
     cancelReaction,
     getMyStatuses,
+    getWeeklyPostingStats,
 };

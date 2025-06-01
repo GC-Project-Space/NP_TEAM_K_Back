@@ -3,6 +3,7 @@ const Reaction = require('../models/Reaction');
 const { ReactionType } = require('../constants/ReactionType');
 const { getTodayReport } = require('./reportService');
 const { analyzeEmotionFromOpenAI } = require('../services/openaiService');
+const moment = require('moment');
 
 // todo : 상태 생성하고 감정 표현 할 때 상태 리포트 스키마를 찾아 계속 업데이트 해줘야함
 // todo : 리포트 요청은 즉시 계산해서 내려주는 것이 아니라, 미리 저장해두고 내려주기 때문에
@@ -221,6 +222,36 @@ const getMyStatuses = async (kakaoId, sort = 'recent') => {
     return await Status.find(query).sort(sortOption);
 };
 
+const getWeeklyPostingStats = async (kakaoId) => {
+    const today = moment().startOf('day');
+    const startDate = moment().subtract(6, 'days').startOf('day'); // 6일 전부터 오늘까지 = 7일
+
+    const statuses = await Status.find({
+        writerKakaoId: kakaoId,
+        createdAt: {
+            $gte: startDate.toDate(),
+            $lte: today.clone().endOf('day').toDate(),
+        },
+    });
+
+    // 요일별 초기화
+    const result = {
+        월: 0, 화: 0, 수: 0, 목: 0, 금: 0, 토: 0, 일: 0,
+    };
+
+    statuses.forEach(status => {
+        const weekday = moment(status.createdAt).format('dd'); // ex: 'Mo', 'Tu', ...
+        const map = {
+            Mo: '월', Tu: '화', We: '수', Th: '목',
+            Fr: '금', Sa: '토', Su: '일',
+        };
+        const day = map[weekday];
+        if (day) result[day] += 1;
+    });
+
+    return result;
+};
+
 module.exports = {
     createStatus,
     deleteStatus,
@@ -229,4 +260,5 @@ module.exports = {
     reactToStatus,
     cancelReaction,
     getMyStatuses,
+    getWeeklyPostingStats,
 };
